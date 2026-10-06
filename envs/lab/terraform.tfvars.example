@@ -1,0 +1,6 @@
+# Copy to terraform.tfvars, it's in .gitignore
+# Your public IP: curl -s ifconfig.me
+my_ip          = "203.0.113.10/32"
+ssh_public_key = "ssh-ed25519 AAAA... ish337 lab"
+
+# region = "us-east-1"
