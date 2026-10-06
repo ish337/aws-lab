@@ -22,6 +22,16 @@ resource "aws_vpc_security_group_ingress_rule" "web_ssh" {
   cidr_ipv4         = var.my_ip
 }
 
+// Pre-defined rule for the web page: HTTP to the web instance only from my IP
+resource "aws_vpc_security_group_ingress_rule" "web_http_from_me" {
+  security_group_id = aws_security_group.web.id
+  description       = "HTTP from my IP"
+  ip_protocol       = "tcp"
+  from_port         = 80
+  to_port           = 80
+  cidr_ipv4         = var.my_ip
+}
+
 resource "aws_vpc_security_group_egress_rule" "web_http" {
   security_group_id = aws_security_group.web.id
   description       = "HTTP to the internet"
@@ -102,7 +112,7 @@ module "web" {
   key_name           = aws_key_pair.lab.key_name
   instance_type      = var.instance_type
 
-  // nginx for the HTTP test, port 80 is closed until there is a rule for it
+  // nginx for the HTTP test
   user_data = <<-EOF
     #!/bin/bash
     apt-get update
