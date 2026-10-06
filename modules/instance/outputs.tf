@@ -11,5 +11,5 @@ output "private_ip" {
 }
 
 output "ami" {
-  value = data.aws_ami.ubuntu.name
+  value = aws_instance.this.ami
 }

@@ -1,16 +1,10 @@
-// The latest Ubuntu 24.04 image from Canonical
-data "aws_ami" "ubuntu" {
-  most_recent = true
-  owners      = ["099720108477"]
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*"]
-  }
+// The latest Ubuntu 24.04 image, Canonical keeps its ID in this public SSM parameter
+data "aws_ssm_parameter" "ubuntu" {
+  name = "/aws/service/canonical/ubuntu/server/24.04/stable/current/amd64/hvm/ebs-gp3/ami-id"
 }
 
 resource "aws_instance" "this" {
-  ami                    = data.aws_ami.ubuntu.id
+  ami                    = data.aws_ssm_parameter.ubuntu.insecure_value
   instance_type          = var.instance_type
   subnet_id              = var.subnet_id
   vpc_security_group_ids = var.security_group_ids
@@ -24,4 +18,9 @@ resource "aws_instance" "this" {
   }
 
   tags = { Name = var.name }
+
+  // A new Ubuntu image must not recreate a running instance
+  lifecycle {
+    ignore_changes = [ami]
+  }
 }
