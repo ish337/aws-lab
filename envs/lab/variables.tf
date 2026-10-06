@@ -34,3 +34,14 @@ variable "my_ip" {
     error_message = "my_ip must be a CIDR, e.g. 203.0.113.10/32."
   }
 }
+
+// Compute
+variable "instance_type" {
+  type    = string
+  default = "t3.micro"
+}
+
+variable "ssh_public_key" {
+  type        = string
+  description = "Public key for the ubuntu user on both instances"
+}
