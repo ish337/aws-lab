@@ -39,3 +39,15 @@ output "ssh_app" {
   value       = "ssh -J ubuntu@${module.web.public_ip} ubuntu@${module.app.private_ip}"
   description = "Through the web instance, run ssh-add ~/.ssh/lab_ed25519 first"
 }
+
+output "bucket_name" {
+  value = module.storage.bucket_name
+}
+
+output "readonly_role_arn" {
+  value = module.storage.readonly_role_arn
+}
+
+output "readwrite_role_arn" {
+  value = module.storage.readwrite_role_arn
+}
